@@ -1,5 +1,6 @@
 import http from "node:http";
 import { json } from "./middlewares/json.js";
+import { Database } from "./database.js";
 
 // GET, POST, PUT, PATCH, DELETE
 
@@ -13,25 +14,29 @@ import { json } from "./middlewares/json.js";
 
 // HTTP Status Code: https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status
 
-const users = [];
+const database = new Database();
 
 const server = http.createServer(async (req, res) => {
-    const { method, url } = req;
-    
-    await json(req, res);
+  const { method, url } = req;
+
+  await json(req, res);
 
   if (method === "GET" && url === "/users") {
+    const users = database.select("users");
+
     return res.end(JSON.stringify(users));
   }
 
   if (method === "POST" && url === "/users") {
     const { nome, email } = req.body;
 
-    users.push({
+    const user = {
       id: 1,
       nome,
       email,
-    });
+    };
+
+    database.insert("users", user);
 
     return res.writeHead(201).end("Usuário Criado");
   }
