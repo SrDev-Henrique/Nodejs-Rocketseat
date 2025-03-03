@@ -1,0 +1,17 @@
+{
+  "name": "01-fundamentos-nodejs",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "stream": "node streams/fundamentals.js",
+    "stream-server": "node streams/stream-http-server.js",
+    "fake-upload": "node streams/fake-upload-to-http-stream.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
