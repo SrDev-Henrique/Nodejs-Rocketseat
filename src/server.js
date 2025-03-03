@@ -1,7 +1,6 @@
 import http from "node:http";
-import { randomUUID } from "node:crypto";
 import { json } from "./middlewares/json.js";
-import { Database } from "./database.js";
+import { routes } from "./routes.js";
 
 // GET, POST, PUT, PATCH, DELETE
 
@@ -15,32 +14,16 @@ import { Database } from "./database.js";
 
 // HTTP Status Code: https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status
 
-const database = new Database();
-
 const server = http.createServer(async (req, res) => {
   const { method, url } = req;
 
   await json(req, res);
 
-  if (method === "GET" && url === "/users") {
-    const users = database.select("users");
+  const route = routes.find((route) => {
+    return route.method === method && route.path === url;
+  });
 
-    return res.end(JSON.stringify(users));
-  }
-
-  if (method === "POST" && url === "/users") {
-    const { nome, email } = req.body;
-
-    const user = {
-      id: randomUUID(),
-      nome,
-      email,
-    };
-
-    database.insert("users", user);
-
-    return res.writeHead(201).end("Usuário Criado");
-  }
+  return route ? route.handler(req, res) : res.writeHead(404).end("Not Found");
 
   return res.writeHead(404).end("Not Found");
 });
