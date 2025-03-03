@@ -1,7 +1,3 @@
-import http from "node:http";
-import { json } from "./middlewares/json.js";
-import { routes } from "./routes.js";
-
 // GET, POST, PUT, PATCH, DELETE
 
 // GET => Buscar um recurso do back-end
@@ -13,6 +9,14 @@ import { routes } from "./routes.js";
 // Cabeçalhos (requisição/resposta) => Metadados
 
 // HTTP Status Code: https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status
+
+// Query Parameters: http://localhost:3333/users?userId=1&name=Henrique (Filtros, paginação, não obrigatório)
+// Route Parameters: http://localhost:3333/users/1 (Identificar um recurso)
+// Request Body: http://localhost:3333/users (Dados para criação ou atualização de um recurso)
+
+import http from "node:http";
+import { json } from "./middlewares/json.js";
+import { routes } from "./routes.js";
 
 const server = http.createServer(async (req, res) => {
   const { method, url } = req;
